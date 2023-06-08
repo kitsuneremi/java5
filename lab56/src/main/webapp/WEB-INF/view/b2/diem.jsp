@@ -1,0 +1,1 @@
+<p>ket qua ${result} voi diem = ${tongket}</p>

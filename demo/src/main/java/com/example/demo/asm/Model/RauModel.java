@@ -3,24 +3,29 @@ package com.example.demo.asm.Model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity(name = "rau")
-@SequenceGenerator(name = "rau_seq", sequenceName = "rau_seq", allocationSize = 1)
 public class RauModel {
     @Id
     @GeneratedValue(generator = "0", strategy = GenerationType.IDENTITY)
+    @Column(name = "ma")
     private int ma;
-    @Column
-    private String ten;
-    @Column
-    private int soluong;
-    @Column
-    private BigDecimal dongia;
-    @Column
-    private boolean ansong;
-    @Column
-    private int phanloai;
 
+    @Column(name = "ten")
+    private String ten;
+
+    @Column(name = "soluong")
+    private int soluong;
+
+    @Column(name = "dongia")
+    private BigDecimal dongia;
+
+    @Column(name = "ansong")
+    private boolean ansong;
+
+    @Column(name = "phanloai")
+    private int phanloai;
     public RauModel() {
     }
 

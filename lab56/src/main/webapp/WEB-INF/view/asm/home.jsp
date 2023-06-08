@@ -75,38 +75,40 @@
         <p>found ${pagex.getTotalElements()}</p>
         <c:if test="${not (pagex.getTotalElements() == 0)}">
             <table class="table">
-                <tr>
-                    <th scope="col">ma</th>
-                    <th scope="col">ten</th>
-                    <th scope="col">so luong</th>
-                    <th scope="col">don gia</th>
-                    <th scope="col">an song</th>
-                    <th scope="col">phan loai</th>
+                <tr class="row">
+                    <th scope="col" class="col">ma</th>
+                    <th scope="col"  class="col">ten</th>
+                    <th scope="col" class="col">so luong</th>
+                    <th scope="col" class="col">don gia</th>
+                    <th scope="col" class="col">an song</th>
+                    <th scope="col" class="col">phan loai</th>
+                    <th scope="col" class="col"></th>
+                    <th scope="col" class="col"></th>
                 </tr>
                 <c:forEach items="${pagex.getContent()}" var="sp">
 
-                    <tr>
-                        <td><a href="/asm/detail/${sp.ma}">${sp.ma}</a></td>
-                        <td>${sp.ten}</td>
-                        <td>${sp.soluong}</td>
-                        <td>${sp.dongia}</td>
+                    <tr class="row">
+                        <td class="col"><a href="/asm/detail/${sp.ma}">${sp.ma}</a></td>
+                        <td class="col">${sp.ten}</td>
+                        <td class="col">${sp.soluong}</td>
+                        <td class="col">${sp.dongia}</td>
                         <c:choose>
                             <c:when test="${sp.ansong == true}">
-                                <td>dc</td>
+                                <td class="col">dc</td>
                             </c:when>
                             <c:when test="${sp.ansong == false}">
-                                <td>ko dc</td>
+                                <td class="col">ko dc</td>
                             </c:when>
                         </c:choose>
                         <c:choose>
                             <c:when test="${sp.phanloai == 0}">
-                                <td>rau</td>
+                                <td class="col">rau</td>
                             </c:when>
                             <c:when test="${sp.phanloai == 1}">
-                                <td>cu</td>
+                                <td class="col">cu</td>
                             </c:when>
                             <c:when test="${sp.phanloai == 2}">
-                                <td>qua</td>
+                                <td class="col">qua</td>
                             </c:when>
                         </c:choose>
                         <td><a href="/asm/delete/${sp.ma}">delete</a></td>
