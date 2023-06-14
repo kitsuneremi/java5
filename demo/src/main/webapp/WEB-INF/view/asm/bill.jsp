@@ -23,8 +23,8 @@
     </thead>
     <tbody>
     <c:forEach items="${list}" var="hd" varStatus="status">
-        <tr onclick="redirectToDetail('${hd.ma}')">
-            <th scope="row">${status.index + 1}</th>
+        <tr>
+            <th scope="row"><a href="/asm/detailbill?id=${hd.ma}">${status.index + 1}</a></th>
             <td>${hd.ngaytao}</td>
             <td>${hd.tongtien}</td>
         </tr>
@@ -35,7 +35,4 @@
 
 
 <script>
-    function redirectToDetail(id) {
-        window.location.href = "/asm/detailbill?id=" + id;
-    }
 </script>

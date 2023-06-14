@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -10,7 +11,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
+<head>
+    <meta charset="UTF-8">
+</head>
 <c:set var="page" value="${not empty param.stt ? param.stt : 1}"/>
 <jsp:include page="navbar.jsp"></jsp:include>
 <div style="width: 100vw; height: 100vh" class="row">
@@ -35,9 +38,9 @@
             </div>
             <div style="margin-bottom: 20px">
                 <label for="andc">duoc</label>
-                <input id="andc" name="ansong" type="radio" checked aria-selected="true"/>
+                <input id="andc" name="ansong" type="radio" checked aria-selected="true" value="0"/>
                 <label for="koandc">ko dc</label>
-                <input id="koandc" name="ansong" type="radio"/>
+                <input id="koandc" name="ansong" type="radio" value="1"/>
             </div>
             <div style="margin-bottom: 20px">
                 <label for="phanloai">phan loai</label>

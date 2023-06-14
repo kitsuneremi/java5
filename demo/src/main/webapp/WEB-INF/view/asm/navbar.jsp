@@ -20,7 +20,8 @@
 
             <c:choose>
                 <c:when test="${not empty matk}">
-                    <p>hello ${sessionScope.ten}</p>
+                    <a class="nav-link">hello ${sessionScope.ten}</a>
+                    <a class="nav-link" href="/asm/logout">logout</a>
                 </c:when>
                 <c:otherwise>
                     <a class="nav-link" href="/asm/login">login</a>

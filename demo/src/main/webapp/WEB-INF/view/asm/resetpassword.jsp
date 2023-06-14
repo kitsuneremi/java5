@@ -11,16 +11,14 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <body>
-    <div class="col-6 offset-3">
-        <form action="/asm/forgotpassword" method="post">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">username</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" name="username">
-            </div>
-            <label for="email">email</label>
-            <input type="email" class="form-control" id="email" name="email"/>
-            <button class="btn-primary mt-3">get code</button>
-        </form>
-    </div>
+<div class="col-6 offset-3">
+    <form action="/asm/forgotpassword" method="post">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">username</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="password">
+        </div>
+        <button class="btn-primary mt-3">reset password</button>
+    </form>
+</div>
 
 </body>

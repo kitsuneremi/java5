@@ -13,6 +13,13 @@
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
 <div class="col-6 offset-3">
+    <form action="/asm/statistical" method="get">
+        <label>
+            select date
+            <input type="date" name="typeDate" />
+        </label>
+        <input type="submit" value="search"/>
+    </form>
     <p>danh sach 10 rau ban chay nhat</p>
     <table class="table">
         <thead>
@@ -44,6 +51,7 @@
             <th scope="col">an song</th>
             <th scope="col">phan loai</th>
             <th scope="col">don gia</th>
+            <th scope="col">so luong ton</th>
         </tr>
         </thead>
         <tbody>
@@ -70,6 +78,7 @@
                     </c:when>
                 </c:choose>
                 <td>${rau.dongia}</td>
+                <td>${rau.soluong}</td>
             </tr>
         </c:forEach>
         </tbody>

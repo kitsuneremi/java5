@@ -26,6 +26,7 @@
         </form>
 
         <a href="/asm/register">don't have an account? Register</a>
+        <a href="/asm/"></a>
         <c:if test="${not message.equals('')}">
             <p class="text-danger">${message}</p>
         </c:if>

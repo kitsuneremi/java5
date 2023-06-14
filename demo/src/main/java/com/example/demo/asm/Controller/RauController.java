@@ -85,8 +85,16 @@ public class RauController {
         rau.setMa(Integer.parseInt(ma));
         rau.setTen(ten);
         rau.setSoluong(Integer.parseInt(soluong));
-        rau.setDongia(BigDecimal.valueOf(Double.parseDouble(dongia)));
-        rau.setAnsong(Boolean.parseBoolean(ansong));
+        BigDecimal bigDecimalValue = new BigDecimal(dongia);
+        BigDecimal maxValue = new BigDecimal("922337203685477.5807");
+        BigDecimal minValue = new BigDecimal("-922337203685477.5808");
+        if (bigDecimalValue.compareTo(maxValue) > 0) {
+            bigDecimalValue = maxValue;
+        } else if (bigDecimalValue.compareTo(minValue) < 0) {
+            bigDecimalValue = minValue;
+        }
+        rau.setDongia(bigDecimalValue);
+        rau.setAnsong(!ansong.equals("0"));
         rau.setPhanloai(Integer.parseInt(phanloai));
 
         RauModel existingModel = repo.findById(rau.getMa()).orElse(null);
@@ -117,7 +125,6 @@ public class RauController {
         if (request.getSession().getAttribute("matk") == null) {
             return "redirect:/asm/login";
         }
-        GioHangChiTietModel ghmodel = new GioHangChiTietModel();
         List<GioHangChiTietModel> list = ghrepo.findByMataikhoan(matk);
         int count = -1;
 
@@ -158,27 +165,36 @@ public class RauController {
 
     @PostMapping("/cart/delete")
     @Transactional
-    public String deletecart(@RequestParam String marau, @RequestParam String mataikhoan) {
+    public String deletecart(HttpServletRequest request,@RequestParam String marau, @RequestParam String mataikhoan) {
+        int matk = Integer.parseInt(request.getSession().getAttribute("matk").toString());
+        if (request.getSession().getAttribute("matk") == null || matk == -1) {
+            return "redirect:/asm/login";
+        }
         ghrepo.deleteByMarauAndMataikhoan(Integer.parseInt(marau), Integer.parseInt(mataikhoan));
         return "redirect:/asm/cart";
     }
 
     @PostMapping("/cart/update")
-    public String updatecart(@RequestParam String marau, @RequestParam String sl) {
+    public String updatecart(HttpSession session,@RequestParam String marau, @RequestParam String sl) {
         GioHangChiTietModel ghmodel = new GioHangChiTietModel();
         List<GioHangChiTietModel> list = ghrepo.findAll();
-        for (GioHangChiTietModel x : list) {
-            if (x.getMarau() == Integer.parseInt(marau)) {
-                x.setSoluong(Integer.parseInt(sl));
-                ghrepo.save(x);
-            } else {
-                ghmodel.setMataikhoan(1);
-                ghmodel.setMarau(Integer.parseInt(marau));
-                ghmodel.setRau(repo.findByMa(Integer.parseInt(marau)));
-                ghmodel.setSoluong(Integer.parseInt(sl));
-                ghmodel.setTaikhoan(tkrepo.findByMa(1));
-                ghrepo.save(ghmodel);
+        int count = -1;
+
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getMarau() == Integer.parseInt(marau)){
+                count = i;
             }
+        }
+        if(count == -1){
+            GioHangChiTietModel newgh = new GioHangChiTietModel();
+            newgh.setMarau(Integer.parseInt(marau));
+            newgh.setMataikhoan(Integer.parseInt(session.getAttribute("matk").toString()));
+            newgh.setSoluong(Integer.parseInt(sl));
+            ghrepo.save(newgh);
+        }else{
+            GioHangChiTietModel m = list.get(count);
+            m.setSoluong(Integer.parseInt(sl));
+            ghrepo.save(m);
         }
         return "redirect:/asm/cart";
     }
@@ -296,15 +312,21 @@ public class RauController {
         if (session.getAttribute("matk") == null) {
             return "redirect:/asm/login";
         }
-        List<HoaDonChiTietModel> list = hdctrepo.findByMahoadon(Integer.parseInt(id));
+//        List<HoaDonChiTietModel> list = hdctrepo.findByMahoadon(Integer.parseInt(id));
+        List<HoaDonChiTietModel> list = hdctrepo.findbymahoadonandmataikhoan(Integer.parseInt(id), Integer.parseInt(session.getAttribute("matk").toString()));
         model.addAttribute("list", list);
         return "/asm/detailbill";
     }
 
     @RequestMapping("/statistical")
-    public String statistical(@RequestParam(required = false, defaultValue = "7") String typeDate, Model model) {
-        Date startDate = new Date(System.currentTimeMillis() - (long) Integer.parseInt(typeDate) * 24 * 60 * 60 * 1000);
-        List<Integer> list = repo.findTopSellingRaum(startDate, PageRequest.of(0, 10));
+    public String statistical(@RequestParam(required = false, defaultValue = "1-1-2000") String typeDate, Model model) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date parsedDate = sdf.parse(typeDate);
+
+
+        List<Integer> list = repo.findTopSellingRaum(parsedDate, PageRequest.of(0, 10));
+
         List<TopSellingRauViewModel> listRauBanChay = new ArrayList<>();
         for (Integer integer : list) {
             RauModel rau = repo.findByMa(integer);
@@ -327,9 +349,17 @@ public class RauController {
             tsl.setTongluongban(repo.findTopQuantity(rau.getMa()));
             listRauBanChay.add(tsl);
         }
-        List<RauModel> listkobandc = repo.findTopRauCantSell(startDate, PageRequest.of(0, 10));
+        List<RauModel> listkobandc = repo.findTopRauCantSell(parsedDate, PageRequest.of(0, 10));
         model.addAttribute("listRauBanChay", listRauBanChay);
         model.addAttribute("listRauKhongBanDuoc", listkobandc);
         return "/asm/statistical";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request){
+        if(request.getSession().getAttribute("matk") != null){
+            request.getSession().removeAttribute("matk");
+        }
+        return "redirect:/asm";
     }
 }
